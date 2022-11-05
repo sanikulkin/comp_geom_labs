@@ -4,7 +4,7 @@
 
 // Vertex shader program
 const VSHADER_SOURCE =
-    '#version 100\n' +
+  '#version 100\n' +
   'attribute vec4 a_Position;\n' +
   'attribute float a_PointSize;\n' + 
   'attribute vec4 a_FragColor;\n' +
@@ -90,6 +90,53 @@ function task10(gl) {
     console.log('Failed to get the storage location of a_PointSize');
     return -1;
   }
+
+
+
+  function draw(timestamp) {
+    M_anim = mat4.create();
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    if (now == undefined) now = timestamp;
+
+    const elapsed = now - g_last;
+    console.log(elapsed/1000);
+
+    let newAngle = angle + (ANGLE_STEP * elapsed) / 1000;
+    mat4.fromRotation(M_anim, newAngle, [0.0, 0.0, 1.0]);
+    gl.uniformMatrix4fv(u_Mat, false, M_anim);
+    gl.drawArrays(gl.LINE_LOOP, 0, 3);
+    
+    g_last = timestamp;
+    requestAnimationFrame(draw);
+  }
+
+  function initVertexBuffers(gl) {
+    const n = 3;
+    const points = new Float32Array([0.0, 0.5, -0.5, -0.5, 0.5, -0.5]);
+                
+    const pointsBuffer = gl.createBuffer();
+    if (!pointsBuffer) {
+        console.log('Failed to create the buffer object');
+        return -1;
+    }
+
+    const FSIZE = points.BYTES_PER_ELEMENT;
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, pointsBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, points, gl.STATIC_DRAW);
+
+    const a_Position = gl.getAttribLocation(gl.program, 'a_Position');
+    if (a_Position < 0) {
+        console.log('Failed to get the storage location of a_Position');
+        return -1;
+    }
+  
+    gl.vertexAttribPointer(a_Position, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(a_Position);
+
+    return n;
+  }   
   
   const a_FragColor = gl.getAttribLocation(gl.program, 'a_FragColor');
   if (a_FragColor < 0) {
