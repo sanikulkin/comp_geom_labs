@@ -18,18 +18,17 @@ const FSHADER_SOURCE =
 const {mat2, mat3, mat4, vec2, vec3, vec4} = glMatrix;
 const angle = 0;
 
-var gl; 
 var u_Mat;
 
-function main() {
-  const canvas = document.getElementById('webgl');
-  gl = getWebGLContext(canvas);
+const canvas = document.getElementById('webgl');
+const gl = getWebGLContext(canvas);
 
+function main() {
   if (!gl) {
     console.log('Failed to get the rendering context for WebGL');
     return;
   }
-
+  
   gl.clearColor(0, 0, 0, 1);
   gl.clear(gl.COLOR_BUFFER_BIT);
 
