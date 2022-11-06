@@ -16,6 +16,7 @@ const FSHADER_SOURCE =
   '}\n';
 
 const {mat2, mat3, mat4, vec2, vec3, vec4} = glMatrix;
+const angle = 0;
 
 var gl; 
 var u_Mat;
@@ -76,13 +77,13 @@ function main() {
 
 
 function Task1(gl, u_FragColor, u_Mat, n) {
-  let M_standart = mat4.create();
-  mat4.fromTranslation(M_standart, [0, 0, 0]);
+  let m = mat4.create();
+  mat4.fromTranslation(m, [0, 0, 0]);
 
   let M = mat4.create()
   mat4.fromTranslation(M, [0.3, 0.3, 0]);
 
-  gl.uniformMatrix4fv(u_Mat, false, M_standart);
+  gl.uniformMatrix4fv(u_Mat, false, m);
   gl.uniform4f(u_FragColor, 1.0, 0.0, 0.0, 1.0);
   gl.drawArrays(gl.LINE_LOOP, 0, n);
 
@@ -92,13 +93,13 @@ function Task1(gl, u_FragColor, u_Mat, n) {
 }
 
 function Task2(gl, u_FragColor, u_Mat, n) {
-  let M_standart = mat4.create();
-  mat4.fromTranslation(M_standart, [0, 0, 0]);
+  let m = mat4.create();
+  mat4.fromTranslation(m, [0, 0, 0]);
 
   let M = mat4.create()
   mat4.fromRotation(M, Math.PI/4, [0.0, 0.0, 1.0]);
 
-  gl.uniformMatrix4fv(u_Mat, false, M_standart);
+  gl.uniformMatrix4fv(u_Mat, false, m);
   gl.uniform4f(u_FragColor, 1.0, 0.0, 0.0, 1.0);
   gl.drawArrays(gl.LINE_LOOP, 0, n);
 
@@ -108,13 +109,13 @@ function Task2(gl, u_FragColor, u_Mat, n) {
 }
 
 function Task3(gl, u_FragColor, u_Mat, n) {
-  let M_standart = mat4.create();
-  mat4.fromTranslation(M_standart, [0, 0, 0]);
+  let m = mat4.create();
+  mat4.fromTranslation(m, [0, 0, 0]);
 
   let M = mat4.create()
   mat4.fromScaling(M, [1.0, 1.5, 1.0]);
 
-  gl.uniformMatrix4fv(u_Mat, false, M_standart);
+  gl.uniformMatrix4fv(u_Mat, false, m);
   gl.uniform4f(u_FragColor, 1.0, 0.0, 0.0, 1.0);
   gl.drawArrays(gl.LINE_LOOP, 0, n);
 
@@ -124,8 +125,8 @@ function Task3(gl, u_FragColor, u_Mat, n) {
 }
 
 function Task4(gl, u_FragColor, u_Mat, n) {
-  let M_standart = mat4.create();
-  mat4.fromTranslation(M_standart, [0, 0, 0]);
+  let m = mat4.create();
+  mat4.fromTranslation(m, [0, 0, 0]);
 
   let M = mat4.create();
   mat4.fromTranslation(M, [0.4, 0.0, 0.0]);
@@ -134,7 +135,7 @@ function Task4(gl, u_FragColor, u_Mat, n) {
   let M2 = mat4.create();
   mat4.fromTranslation(M2, [0.4, 0.0, 0.0]);
 
-  gl.uniformMatrix4fv(u_Mat, false, M_standart);
+  gl.uniformMatrix4fv(u_Mat, false, m);
   gl.uniform4f(u_FragColor, 1.0, 0.0, 0.0, 1.0);
   gl.drawArrays(gl.LINE_LOOP, 0, n);
 
@@ -148,8 +149,8 @@ function Task4(gl, u_FragColor, u_Mat, n) {
 }
 
 function Task5(gl, u_FragColor, u_Mat, n) {
-  let M_standart = mat4.create();
-  mat4.fromTranslation(M_standart, [0, 0, 0]);
+  let m = mat4.create();
+  mat4.fromTranslation(m, [0, 0, 0]);
 
   let M = mat4.create();
   mat4.fromTranslation(M, [0.4, 0.0, 0.0]);
@@ -171,13 +172,10 @@ function Task5(gl, u_FragColor, u_Mat, n) {
   gl.drawArrays(gl.LINE_LOOP, 0, n);
 }
 
-var angle = 0;
-var M_anim;
-
 function Task6(gl, u_FragColor, u_Mat, n) {
-  M_anim = mat4.create();
+  let m = mat4.create();
 
-  mat4.fromRotation(M_anim, angle, [0.0, 0.0, 1.0]);
+  mat4.fromRotation(m, angle, [0.0, 0.0, 1.0]);
 
   gl.uniform4f(u_FragColor, 1.0, 0.0, 0.0, 1.0);
   draw()
@@ -188,7 +186,7 @@ var g_last;
 var now;
 
 function draw(timestamp) {
-  M_anim = mat4.create();
+  let m = mat4.create();
   gl.clear(gl.COLOR_BUFFER_BIT);
 
   if (now == undefined) {
@@ -198,8 +196,8 @@ function draw(timestamp) {
   const elapsed = now - g_last;
 
   let newAngle = angle + (ANGLE_STEP * elapsed) / 1000;
-  mat4.fromRotation(M_anim, newAngle, [0.0, 0.0, 1.0]);
-  gl.uniformMatrix4fv(u_Mat, false, M_anim);
+  mat4.fromRotation(m, newAngle, [0.0, 0.0, 1.0]);
+  gl.uniformMatrix4fv(u_Mat, false, m);
   gl.drawArrays(gl.LINE_LOOP, 0, 3);
   
   g_last = timestamp;

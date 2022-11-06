@@ -1,8 +1,5 @@
-// 04.js
-
 "use strict";
 
-// Vertex shader program
 const VSHADER_SOURCE =
     '#version 100\n' +
   'attribute vec4 a_Position;\n' +
@@ -11,7 +8,6 @@ const VSHADER_SOURCE =
   '  gl_PointSize = 10.0;\n' +
   '}\n';
 
-// Fragment shader program
 const FSHADER_SOURCE =
   'void main() {\n' +
   '  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n' +
@@ -20,30 +16,25 @@ const FSHADER_SOURCE =
 const {mat2, mat3, mat4, vec2, vec3, vec4} = glMatrix;
 
 function main() {
-  // Retrieve <canvas> element
   const canvas = document.getElementById('webgl');
 
-  // Get the rendering context for WebGL
   const gl = getWebGLContext(canvas);
   if (!gl) {
     console.log('Failed to get the rendering context for WebGL');
     return;
   }
 
-  // Initialize shaders
   if (!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE)) {
     console.log('Failed to intialize shaders.');
     return;
   }
 
-  // Write the positions of vertices to a vertex shader
   const n = initVertexBuffers(gl);
   if (n < 0) {
     console.log('Failed to set the positions of the vertices');
     return;
   }
 
-  // Specify the color for clearing <canvas>
   gl.clearColor(0, 0, 0, 1);
 
   const controls = {
